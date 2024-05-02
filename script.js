@@ -1,9 +1,10 @@
-const g = 1; // Gravity
+const g = 1.4; // Gravity
 const jump = 20; // Jump power
-const ground = 20;
-const size = 20;
+const ground = 40;
+const size = 57;
 
 
+let x, y, vy;
 
 
 
@@ -33,8 +34,29 @@ function draw() {
     background(bg)
   player.update();
   player.draw();
+  let gy = height - ground;
+  line(0, gy, width, gy);
   
-}
+
+    y += vy;
+
+
+    if(y < height - ground - size / 2){ // in the air
+      vy += g;
+    }
+    else{
+      vy = 0;
+      y = height - ground - size / 2;
+    }
+  }
+
+  function mousePressed(){
+    if(y >= height - ground - size / 2){ // on the ground
+      vy = -jump;     
+    }
+  }
+  
+
 
 ///////////////////////////////////////////////////////////
 
@@ -104,6 +126,6 @@ class Player {
 
   draw() {
     fill(255, 0, 0);
-    square(this.x, this.y, 30);
+    square(this.x, y, 30);
   }
 }
