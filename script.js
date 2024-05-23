@@ -72,19 +72,6 @@ function setup() {
   mech.tile = "m";
 
 
-
-//  robotoff = new Group();
-//  robotoff.collider = "static";
-//  if (score==1){
-//    robotoff.spriteSheet = robotonImg;
-//  }
-//  else {
-//    robotoff.spriteSheet = robotoffImg;
-//  }
-//  robotoff.addAni({ w: 16, h: 16, row: 0, frames: 14 });
-//  robotoff.tile = "r";
-  
-
   enemies = new Group();
   enemies.collider = "static";
   enemies.spriteSheet = enemyImg;
@@ -111,12 +98,6 @@ function setup() {
   );
 
   player = new Sprite(53, 100, 10);
-  // robotoff = new Sprite(20, 137, 10);
-  
-  // robotoff.spriteSheet = robotoffImg;
-  // robotoff.collider = "static";
-  // robotoff.addAni({ w: 16, h: 16, row: 0, frames: 14 });
-  
   player.layer = 1;
   player.anis.w = 16;
   player.anis.h = 16;
@@ -145,7 +126,7 @@ function setup() {
   groundSensor.overlaps(player);
 
   textAlign(CENTER);
-  bullet = new Bullet(player.x, player.y, 1); //!!!!
+  bullet = new Bullet(player.x, player.y, 1); 
 }
 
 function collectMech(player, mech) {
