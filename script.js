@@ -9,7 +9,6 @@ let bullet;
 let bulletSpeed = 5;
 let bullets = [];
 
-let robotoff;
 
 let score = 0;
 
@@ -22,8 +21,6 @@ function preload() {
   robotoffImg = loadImage("robot_off.png");
   tableImg = loadImage("title.png");
   robotonImg = loadImage("robot_on.png");
-  
-
 }
 
 class Bullet {
@@ -38,7 +35,7 @@ class Bullet {
   }
 
   display() {
-    fill(255, 0, 0); 
+    fill(111, 49, 152); 
     ellipse(this.x, this.y, 5, 5); 
   }
 }
@@ -50,8 +47,10 @@ function setup() {
   world.gravity.y = 10;
   allSprites.pixelPerfect = true;
 
-
-
+  robot = new Sprite(20, 137, 10);
+  robot.collider = "static";
+  robot.addImage('off', robotoffImg);
+  robot.addImage('on', robotonImg);
 
 
   block = new Group();
@@ -74,16 +73,16 @@ function setup() {
 
 
 
-  robotoff = new Group();
-  robotoff.collider = "static";
-  if (score==1){
-    robotoff.spriteSheet = robotonImg;
-  }
-  else {
-    robotoff.spriteSheet = robotoffImg;
-  }
-  robotoff.addAni({ w: 16, h: 16, row: 0, frames: 14 });
-  robotoff.tile = "r";
+//  robotoff = new Group();
+//  robotoff.collider = "static";
+//  if (score==1){
+//    robotoff.spriteSheet = robotonImg;
+//  }
+//  else {
+//    robotoff.spriteSheet = robotoffImg;
+//  }
+//  robotoff.addAni({ w: 16, h: 16, row: 0, frames: 14 });
+//  robotoff.tile = "r";
   
 
   enemies = new Group();
@@ -94,15 +93,15 @@ function setup() {
 
   new Tiles(
     [
-      "   t                                                     ",
+      "  t                                                     ",
       "       e  m    e    b              e        ",
-      "     bbbbbbbbbbb   bb m       bbbbbbbbbbbb                   ",
+      "      bbbbbbbbbb   bb m       bbbbbbbbbbbb                   ",
       "                   bbbbbb                   b   m",
       "                                                b       ",
       "                  m                                  ",
       "                  bb                           b     ",
       "                b  b  b                      b      ",
-      "  r            e   b         e    e m      e    ",
+      "               e   b         e    e m      e    ",
       "bbbbbbbbbb    bbbbbb      bbbbbbbbbbb    bbb",
     ],
     8,
@@ -112,8 +111,12 @@ function setup() {
   );
 
   player = new Sprite(53, 100, 10);
+  // robotoff = new Sprite(20, 137, 10);
   
-
+  // robotoff.spriteSheet = robotoffImg;
+  // robotoff.collider = "static";
+  // robotoff.addAni({ w: 16, h: 16, row: 0, frames: 14 });
+  
   player.layer = 1;
   player.anis.w = 16;
   player.anis.h = 16;
@@ -128,7 +131,7 @@ function setup() {
   });
   player.ani = "idle";
   player.rotationLock = true;
-
+  
 
   player.friction = 0;
 
@@ -157,31 +160,32 @@ function die(player, enemy) {
   player.y = 100;
 }
 
-function draw() {
-// score = 1;
-//   if (score == 1){
-//     robotoff.removeAll();
-//     s = new robotoff.Sprite();
-//     s.spriteSheet = robotonImg;
-    
-//   }
-//   else {
-//     robotoff.removeAll();
-//     s = new robotoff.Sprite();
-//     s.spriteSheet = robotoffImg;
 
-// }
+
+function draw() {
   
   background(bg)
   fill(255);
-
+  
+  
   text("Score: " + score, 160, 20);
 
 
+
+    
+    if (score == 5){
+        robot.changeAnimation('on');
+
+
+    }
+    else {
+      robot.changeAnimation('off');
+  }
   groundSensor.moveTowards(player.x, player.y + 6, 1);
 
-
-
+  if (player.x > 29 && player.x < 60 && score==5 && player.y == 138) {
+    gameover();
+  }
   if (groundSensor.overlapping(block)) {
     if (kb.presses("space")) {
       player.ani = "jump";
@@ -238,6 +242,10 @@ function draw() {
   }
 
   camera.x = player.x + 52;
+  function gameover(){
+    text('U did it!', width / 2, height / 2);
+    noLoop();
+  }
   
 }
 
